@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card text-center">
+      <div class="card-header">
+        Flask OAuth
+      </div>
+      <div class="card-body">
+          {% for message in get_flashed_messages() %}
+                <div class="alert alert-danger" role="alert">
+                      {{ message }}
+                </div>
+            {% endfor %}
+
+            {% if current_user.is_authenticated %}
+                <h5 class="card-title">Добро пожаловать, {{ current_user.username }}!</h5>
+                <div class="container">
+                     <p class="card-text">Ваши друзья:</p>
+                     <div class="row justify-content-center">
+                        {% for friend in friends_list %}
+                          <div class="col-sm-2">
+                            <div class="card mb-2">
+                              <div class="card-body">
+                                <h5 class="card-title">{{ friends_list.get(friend).get('user_name') }}</h5>
+                                <p class="card-text">
+                                     <a href="{{ friends_list.get(friend).get('user_url') }}">@{{ friend }}</a>
+                                 </p>
+                              </div>
+                            </div>
+                          </div>
+                        {% endfor %}
+                   </div>
+                </div>
+          
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <a href="{{ url_for('logout') }}" class="btn btn-danger btn-lg active"
+                           role="button" aria-pressed="true">Выйти
+                        </a>
+                    </div>
+                </div>
+          
+            {% else %}
+                <h5 class="card-title">Вы не авторизованы!</h5>
+                <p class="card-text ">Для авторизации нажмите на кнопку ниже</p>
+                <a href="{{ url_for('oauth_authorize', provider='vk') }}" class="btn btn-primary btn-lg active"
+                   role="button" aria-pressed="true">Войти с Вконтакте</a>
+            {% endif %}  
+      </div>
+    </div>
+{% endblock content %}
+
+
+    
